@@ -1,4 +1,5 @@
-Student.class
-Course.class
-Instructor.class
+zzz\Course.class
+module-info.class
+zzz\Instructor.class
+zzz\Student.class
 zzz\App.class

@@ -1,3 +1,5 @@
+package zzz;
+
 /**
  * @author Ethan Hardy, Jacob Carney, Brian Thomas
  * 
@@ -24,13 +26,14 @@ public class Student {
     }
 
 // Overloaded constructor to take more parameters
-    public Student(String name, int year, String major, double GPA, String email) {
+    public Student(String name, String year, String major, double GPA, String email) {
         int index = name.indexOf(" ");
         this.firstName = name.substring(0, index);
         this.lastName = name.substring(index);
         this.studentMajor = major;
         this.GPA = GPA; 
         this.studentEmail = email; 
+        this.studentYear = year;
         this.studentID = nextStudentID;
         nextStudentID++;
     }
@@ -66,25 +69,9 @@ public class Student {
     }
 
 // Setter method for setting the year of a student
-    public void setStudentYear(int year) {
+    public void setStudentYear(String year) {
     // Receives the year as an integer and sets the year to the corresponding educational cohort
-        switch (year) {
-            case (1) : 
-                this.studentYear = " Freshman"; 
-                break;
-            case (2) :
-                this.studentYear = " Sophmore";
-                break;
-            case (3) :
-                this.studentYear = " Junior";
-                break;
-            case (4) :
-                this.studentYear = " Senior";
-                break;
-            default :
-                this.studentYear = " Invalid Student Year";
-                break;
-        }
+        this.studentYear = year;
     }    
 
 // Getter method for returning the year of a student
