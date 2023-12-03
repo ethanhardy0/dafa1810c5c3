@@ -65,7 +65,6 @@ public class App extends Application {
         grid.add(stuEmailLabel, 5, 7);
         
         TextField stuName = new TextField();
-       // TextField stuYear = new TextField();
        
         ComboBox<String> stuYear = new ComboBox<>();
         stuYear.setItems(FXCollections.observableArrayList(
@@ -86,29 +85,26 @@ public class App extends Application {
         grid.add(stuGPA,6,6);
         grid.add(stuEmail,6,7);
         
-        
-        
+        //
         EventHandler<ActionEvent> addStudentEvent = (ActionEvent e) -> {
-        Student student = new Student( stuName.getText(),stuYear.getValue(),stuMajor.getText(),Double.parseDouble(stuGPA.getText()),stuEmail.getText());
+            Student student = new Student( stuName.getText(),stuYear.getValue(),stuMajor.getText(),Double.parseDouble(stuGPA.getText()),stuEmail.getText());
         
-        studentArray.add(student);
+            studentArray.add(student);
         
-        stuName.clear();
-        
-        stuMajor.clear();
-        stuGPA.clear();
-        stuEmail.clear(); 
-        for(int i =0; i < studentArray.size();i++){
-            System.out.println(studentArray.get(i).getName());
-            System.out.println(studentArray.get(i).getStudentMajor());
-            System.out.println(studentArray.get(i).getGPA());
-            System.out.println(studentArray.get(i).getStudentYear());
-            System.out.println(studentArray.get(i).getStudentEmail());
-            System.out.println(studentArray.get(i).getStudentID());
-            
-        }
-        
+            stuName.clear();
+            stuMajor.clear();
+            stuGPA.clear();
+            stuEmail.clear(); 
 
+            // Prints student objects created --> DELETE WHEN FINISHED
+            for(int i =0; i < studentArray.size();i++)  {
+                System.out.println(studentArray.get(i).getName());
+                System.out.println(studentArray.get(i).getStudentMajor());
+                System.out.println(studentArray.get(i).getGPA());
+                System.out.println(studentArray.get(i).getStudentYear());
+                System.out.println(studentArray.get(i).getStudentEmail());
+                System.out.println(studentArray.get(i).getStudentID());
+            }
         }; 
  
         // when button is pressed 
@@ -148,39 +144,38 @@ public class App extends Application {
         grid.add(courseRoomNumberField,16,5);
         grid.add(courseCapacityField, 16,6);
         
-         EventHandler<ActionEvent>addCourseEvent = (ActionEvent e) -> {
+    EventHandler<ActionEvent>addCourseEvent = (ActionEvent e) -> {
       
-      Course course = new Course(courseNameField.toString(), courseBuildingDrop.getValue(),
-      courseRoomNumberField.toString(),Integer.parseInt(courseCapacityField.getText()));
+        Course course = new Course(courseNameField.toString(), courseBuildingDrop.getValue(),
+        courseRoomNumberField.toString(),Integer.parseInt(courseCapacityField.getText()));
       
-      courseArray.add(course);
-      System.out.println("Course Array length"+ courseArray.size());
-      Label success = new Label("Course added!");
-      if(courseArray.size()> courseCounter){
-          courseCounter++;
-          System.out.println("Course counter" + courseCounter);
-      Duration duration = Duration.seconds(2);
-      grid.add(success,20,20);
+        courseArray.add(course);
+        System.out.println("Course Array length"+ courseArray.size());
+        Label success = new Label("Course added!");
+
+        if(courseArray.size()> courseCounter)   {
+            courseCounter++;
+            System.out.println("Course counter" + courseCounter);
+            Duration duration = Duration.seconds(2);
+            grid.add(success,20,20);
       
-      Timeline timeline = new Timeline(new KeyFrame(duration, event -> success.setVisible(false)));
+            Timeline timeline = new Timeline(new KeyFrame(duration, event -> success.setVisible(false)));
       
-      timeline.setCycleCount(1);
-      timeline.play();
-      }
-      courseNameField.clear();
-      courseRoomNumberField.clear();
-      courseCapacityField.clear();
-      
-  };
-        
-        courButton.setOnAction(addCourseEvent);
+            timeline.setCycleCount(1);
+            timeline.play();
+        }
+        courseNameField.clear();
+        courseRoomNumberField.clear();
+        courseCapacityField.clear();
+    };  
+
+    courButton.setOnAction(addCourseEvent);
          
-         
-        StackPane mainPane = new StackPane(grid);  
+    StackPane mainPane = new StackPane(grid);  
         
-        var scene = new Scene(mainPane, 720, 480);
-        stage.setScene(scene);
-        stage.show();
+    var scene = new Scene(mainPane, 720, 480);
+    stage.setScene(scene);
+    stage.show();
     }
 
     public static void main(String[] args) {
