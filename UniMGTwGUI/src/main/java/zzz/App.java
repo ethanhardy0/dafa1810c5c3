@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField; 
 import javafx.scene.control.ComboBox;
 
@@ -24,6 +26,7 @@ import javafx.stage.Stage;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.util.Duration;
 
 /**
@@ -77,11 +80,11 @@ public class App extends Application {
         TextField stuGPAField = new TextField();
         TextField stuEmailField = new TextField();
         
-        grid.add(stuYearDrop,6,4);
+        grid.add(stuYearDrop, 6, 4);
         grid.add(stuNameField, 6, 3);
-        grid.add(stuMajorField,6,5);
-        grid.add(stuGPAField,6,6);
-        grid.add(stuEmailField,6,7);
+        grid.add(stuMajorField, 6, 5);
+        grid.add(stuGPAField, 6, 6);
+        grid.add(stuEmailField, 6, 7);
         
         //
         EventHandler<ActionEvent> addStudentEvent = (ActionEvent e) -> {
@@ -225,14 +228,50 @@ public class App extends Application {
         };
         instrButton.setOnAction(addInstrEvent);
 
+        // Building a Course
+
         Label buildCourseLabel = new Label("Build a Course");
-        Label addStudentLabel = new Label("Add Student:");
+        grid.add(buildCourseLabel, 5, 35);
+        Button updateCourseButton = new Button("Update Course ->");
+        grid.add(updateCourseButton, 6, 40);
+
+        Label buildAddStudentLabel = new Label("Add Student:");
         Label buildToCourseLabel = new Label("To Course:");
         Label buildInstructorToLabel = new Label("Instructor Is:");
+        Label buildNewInstructor = new Label("New Instructor?");
+
+        grid.add(buildAddStudentLabel, 5, 36);
+        grid.add(buildToCourseLabel, 5, 37);
+        grid.add(buildNewInstructor, 6, 38); 
+        grid.add(buildInstructorToLabel, 5, 39); 
+
+        ComboBox<Student> addStudentDrop = new ComboBox<>();
+        //addStudentDrop.setItems();
+        ComboBox<Course> toCourseDrop = new ComboBox<>();
+        //toCourseDrop.setItems();
+        CheckBox newInstructor = new CheckBox();
+        ComboBox<Instructor> addInstructorDrop = new ComboBox<>();
+        //addInstructor.setItems();
+        TextArea updateCourseField = new TextArea();
+
+        grid.add(addStudentDrop, 6, 36);
+        grid.add(toCourseDrop, 6, 37);
+        grid.add(newInstructor, 5, 38); // Aligning weird
+        grid.add(addInstructorDrop, 6, 39);
+        grid.add(updateCourseField, 30, 40);
+
+        EventHandler<ActionEvent> updateCourse = (ActionEvent e) -> {
+
+            addStudentDrop.getItems().clear();
+            toCourseDrop.getItems().clear();
+            newInstructor.setSelected(false);
+            addInstructorDrop.getItems().clear();
+        };
+        updateCourseButton.setOnAction(updateCourse);
 
         StackPane mainPane = new StackPane(grid);  
         
-        var scene = new Scene(mainPane, 800, 600);
+        var scene = new Scene(mainPane, 800, 500);
         stage.setScene(scene);
         stage.show();
     }
