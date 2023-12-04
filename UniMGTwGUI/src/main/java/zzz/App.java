@@ -258,7 +258,7 @@ public class App extends Application {
         grid.add(toCourseDrop, 6, 37);
         grid.add(newInstructor, 5, 38); // Aligning weird
         grid.add(addInstructorDrop, 6, 39);
-        grid.add(updateCourseField, 30, 40);
+        grid.add(updateCourseField, 30, 40); // TextArea messes up format for grid
 
         EventHandler<ActionEvent> updateCourse = (ActionEvent e) -> {
 
