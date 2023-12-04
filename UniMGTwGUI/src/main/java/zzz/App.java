@@ -95,7 +95,7 @@ public class App extends Application {
             stuMajorField.clear();
             stuGPAField.clear();
             stuEmailField.clear(); 
-            // NEED TO CLEAR COMBOBOXES
+            stuYearDrop.getItems().clear();
 
             // Prints student objects created --> DELETE WHEN FINISHED
             for(int i =0; i < studentArray.size();i++)  {
@@ -170,7 +170,7 @@ public class App extends Application {
             courseNameField.clear();
             courseRoomNumberField.clear();
             courseCapacityField.clear();
-            // NEED TO CLEAR COMBOBOXES
+            courseBuildingDrop.getItems().clear();
         };  
         courseButton.setOnAction(addCourseEvent);
 
@@ -221,6 +221,7 @@ public class App extends Application {
             instrOfficeField.clear();
             instrDeptField.clear();
             instrEmailField.clear();
+            instrPrefixDrop.getItems().clear();
         };
         instrButton.setOnAction(addInstrEvent);
 
