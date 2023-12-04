@@ -212,7 +212,7 @@ public class App extends Application {
         grid.add(instrEmailField, 26, 7);
 
         EventHandler<ActionEvent>addInstrEvent = (ActionEvent e) -> {
-            Instructor instructor = new Instructor(instrNameField.toString(), /* IDK */ (String) instrPrefixDrop.getValue(), 
+            Instructor instructor = new Instructor(instrNameField.toString(), instrPrefixDrop.getValue(), 
                 instrOfficeField.toString(), instrDeptField.toString(), instrEmailField.toString());
 
             instructorArray.add(instructor);
@@ -223,6 +223,11 @@ public class App extends Application {
             instrEmailField.clear();
         };
         instrButton.setOnAction(addInstrEvent);
+
+        Label buildCourseLabel = new Label("Build a Course");
+        Label addStudentLabel = new Label("Add Student:");
+        Label buildToCourseLabel = new Label("To Course:");
+        Label buildInstructorToLabel = new Label("Instructor Is:");
 
         StackPane mainPane = new StackPane(grid);  
         
