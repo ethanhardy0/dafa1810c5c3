@@ -214,7 +214,7 @@ public class App extends Application {
         grid.add(instrDeptField, 26, 6);
         grid.add(instrEmailField, 26, 7);
 
-        EventHandler<ActionEvent>addInstrEvent = (ActionEvent e) -> {
+        EventHandler<ActionEvent> addInstrEvent = (ActionEvent e) -> {
             Instructor instructor = new Instructor(instrNameField.toString(), instrPrefixDrop.getValue(), 
                 instrOfficeField.toString(), instrDeptField.toString(), instrEmailField.toString());
 
@@ -252,13 +252,13 @@ public class App extends Application {
         CheckBox newInstructor = new CheckBox();
         ComboBox<Instructor> addInstructorDrop = new ComboBox<>();
         //addInstructor.setItems();
-        TextArea updateCourseField = new TextArea();
+        TextArea updateCourseArea = new TextArea();
 
         grid.add(addStudentDrop, 6, 36);
         grid.add(toCourseDrop, 6, 37);
         grid.add(newInstructor, 5, 38); // Aligning weird
         grid.add(addInstructorDrop, 6, 39);
-        grid.add(updateCourseField, 30, 40); // TextArea messes up format for grid
+        grid.add(updateCourseArea, 30, 40); // TextArea messes up format for grid
 
         EventHandler<ActionEvent> updateCourse = (ActionEvent e) -> {
 
