@@ -1,6 +1,8 @@
 package zzz;
 
 import java.util.ArrayList;
+import java.util.Collection;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -9,7 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-
+import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField; 
 import javafx.scene.control.ComboBox;
@@ -39,14 +41,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
     // Different parts of GUI
-        // Student
         GridPane grid = new GridPane();
         grid.setVgap(1);
         grid.setHgap(1);
-        
+
+        // Student
+
         Label studentLabel = new Label("Add Student:");
         grid.add(studentLabel, 5, 2);
-        
+        Button stuButton = new Button("Add Student ->");
+        grid.add(stuButton,6,18);      
+
         // Add Student Labels
         Label stuNameLabel = new Label("Name: ");
         Label stuYearLabel = new Label("Year:");
@@ -54,47 +59,43 @@ public class App extends Application {
         Label stuGPALabel = new Label("GPA:");
         Label stuEmailLabel = new Label("Email:");
         
-        Button stuButton = new Button("Add Student ->");
-        
-        grid.add(stuButton,6,18);
-
         grid.add(stuNameLabel, 5, 3);
         grid.add(stuYearLabel, 5, 4);
         grid.add(stuMajorLabel, 5, 5);
         grid.add(stuGPALabel, 5, 6); 
         grid.add(stuEmailLabel, 5, 7);
         
-        TextField stuName = new TextField();
-       
-        ComboBox<String> stuYear = new ComboBox<>();
-        stuYear.setItems(FXCollections.observableArrayList(
+        TextField stuNameField = new TextField();
+        ComboBox<String> stuYearDrop = new ComboBox<>();
+        stuYearDrop.setItems(FXCollections.observableArrayList(
                 "Freshman",
                 "Sophomore",
                 "Junior",
                 "Senior"
         ));
-
-       
-        TextField stuMajor = new TextField();
-        TextField stuGPA = new TextField();
-        TextField stuEmail = new TextField();
+        TextField stuMajorField = new TextField();
+        TextField stuGPAField = new TextField();
+        TextField stuEmailField = new TextField();
         
-        grid.add(stuYear,6,4);
-        grid.add(stuName, 6, 3);
-        grid.add(stuMajor,6,5);
-        grid.add(stuGPA,6,6);
-        grid.add(stuEmail,6,7);
+        grid.add(stuYearDrop,6,4);
+        grid.add(stuNameField, 6, 3);
+        grid.add(stuMajorField,6,5);
+        grid.add(stuGPAField,6,6);
+        grid.add(stuEmailField,6,7);
         
         //
         EventHandler<ActionEvent> addStudentEvent = (ActionEvent e) -> {
-            Student student = new Student( stuName.getText(),stuYear.getValue(),stuMajor.getText(),Double.parseDouble(stuGPA.getText()),stuEmail.getText());
+
+            Student student = new Student(stuNameField.getText(), stuYearDrop.getValue(), stuMajorField.getText(), 
+                Double.parseDouble(stuGPAField.getText()), stuEmailField.getText());
         
             studentArray.add(student);
         
-            stuName.clear();
-            stuMajor.clear();
-            stuGPA.clear();
-            stuEmail.clear(); 
+            stuNameField.clear();
+            stuMajorField.clear();
+            stuGPAField.clear();
+            stuEmailField.clear(); 
+            // NEED TO CLEAR COMBOBOXES
 
             // Prints student objects created --> DELETE WHEN FINISHED
             for(int i =0; i < studentArray.size();i++)  {
@@ -110,24 +111,24 @@ public class App extends Application {
         // when button is pressed 
         stuButton.setOnAction(addStudentEvent); 
   
-        
-        Label courNameLabel = new Label("Add Course:");
-        Button courButton = new Button("Add Course ->");
-        
+        // Course
+
+        Label courseLabel = new Label("Add Course:");
+        grid.add(courseLabel, 15, 2);
+        Button courseButton = new Button("Add Course ->");
+        grid.add(courseButton, 16, 18);
+
         Label courseNameLabel = new Label("Course Name: ");
-        Label courseBuildingLabel = new Label("Course Building Name:");
+        Label courseBuildingLabel = new Label("Building:");
         Label roomNumberLabel = new Label("Room Number:");
         Label courseCapacityLabel = new Label("Max Capacity:");
-        grid.add(courButton, 16, 18);
         
-        grid.add(courNameLabel, 15, 2);
         grid.add(courseNameLabel,15,3);
         grid.add(courseBuildingLabel,15,4);
         grid.add(roomNumberLabel, 15,5);
         grid.add(courseCapacityLabel,15,6);
         
         TextField courseNameField = new TextField();
-        //TextField courseBuildingField = new TextField();
         ComboBox<String> courseBuildingDrop = new ComboBox<>();
         courseBuildingDrop.setItems(FXCollections.observableArrayList(
                 "Showker",
@@ -135,7 +136,6 @@ public class App extends Application {
                 "Burress Hall"
           
         ));
-        
         TextField courseRoomNumberField = new TextField();
         TextField courseCapacityField = new TextField();
         
@@ -144,38 +144,91 @@ public class App extends Application {
         grid.add(courseRoomNumberField,16,5);
         grid.add(courseCapacityField, 16,6);
         
-    EventHandler<ActionEvent>addCourseEvent = (ActionEvent e) -> {
+        EventHandler<ActionEvent>addCourseEvent = (ActionEvent e) -> {
       
-        Course course = new Course(courseNameField.toString(), courseBuildingDrop.getValue(),
-        courseRoomNumberField.toString(),Integer.parseInt(courseCapacityField.getText()));
+            Course course = new Course(courseNameField.toString(), courseBuildingDrop.getValue(),
+            courseRoomNumberField.toString(), Integer.parseInt(courseCapacityField.getText()));
       
-        courseArray.add(course);
-        System.out.println("Course Array length"+ courseArray.size());
-        Label success = new Label("Course added!");
+            courseArray.add(course);
 
-        if(courseArray.size()> courseCounter)   {
-            courseCounter++;
-            System.out.println("Course counter" + courseCounter);
-            Duration duration = Duration.seconds(2);
-            grid.add(success,20,20);
-      
-            Timeline timeline = new Timeline(new KeyFrame(duration, event -> success.setVisible(false)));
-      
-            timeline.setCycleCount(1);
-            timeline.play();
-        }
-        courseNameField.clear();
-        courseRoomNumberField.clear();
-        courseCapacityField.clear();
-    };  
+            
+            System.out.println("Course Array length"+ courseArray.size());
+            Label success = new Label("Course added!");
 
-    courButton.setOnAction(addCourseEvent);
-         
-    StackPane mainPane = new StackPane(grid);  
+            if (courseArray.size() > courseCounter)   {
+                courseCounter++;
+                System.out.println("Course counter" + courseCounter);
+                Duration duration = Duration.seconds(2);
+                grid.add(success,20,20);
+      
+                Timeline timeline = new Timeline(new KeyFrame(duration, event -> success.setVisible(false)));
+      
+                timeline.setCycleCount(1);
+                timeline.play();
+            }
+
+            courseNameField.clear();
+            courseRoomNumberField.clear();
+            courseCapacityField.clear();
+            // NEED TO CLEAR COMBOBOXES
+        };  
+        courseButton.setOnAction(addCourseEvent);
+
+        // Instructor
+
+        Label instrLabel = new Label("Add Instructor:");
+        grid.add(instrLabel, 25, 2);
+        Button instrButton = new Button("Add Instructor ->");
+        grid.add(instrButton, 26, 18);
+
+        Label instrNameLabel = new Label("Name:");
+        Label instrPrefixLabel = new Label("Prefix:");
+        Label instrOfficeLabel = new Label("Office:");
+        Label instrDeptLabel = new Label("Department:");
+        Label instrEmailLabel = new Label("Email:");
         
-    var scene = new Scene(mainPane, 720, 480);
-    stage.setScene(scene);
-    stage.show();
+        grid.add(instrNameLabel, 25, 3);
+        grid.add(instrPrefixLabel, 25, 4);
+        grid.add(instrOfficeLabel, 25, 5);
+        grid.add(instrDeptLabel, 25, 6);
+        grid.add(instrEmailLabel, 25, 7);
+
+        TextField instrNameField = new TextField();
+        ComboBox<String> instrPrefixDrop = new ComboBox<>();
+        instrPrefixDrop.setItems(FXCollections.observableArrayList(
+            "Dr.",
+                "Ms.",
+                "Mrs.",
+                "Mr."
+        ));
+        TextField instrOfficeField = new TextField();
+        TextField instrDeptField = new TextField();
+        TextField instrEmailField = new TextField();
+
+        grid.add(instrNameField, 26, 3);
+        grid.add(instrPrefixDrop, 26, 4);
+        grid.add(instrOfficeField, 26, 5);
+        grid.add(instrDeptField, 26, 6);
+        grid.add(instrEmailField, 26, 7);
+
+        EventHandler<ActionEvent>addInstrEvent = (ActionEvent e) -> {
+            Instructor instructor = new Instructor(instrNameField.toString(), /* IDK */ (String) instrPrefixDrop.getValue(), 
+                instrOfficeField.toString(), instrDeptField.toString(), instrEmailField.toString());
+
+            instructorArray.add(instructor);
+
+            instrNameField.clear();
+            instrOfficeField.clear();
+            instrDeptField.clear();
+            instrEmailField.clear();
+        };
+        instrButton.setOnAction(addInstrEvent);
+
+        StackPane mainPane = new StackPane(grid);  
+        
+        var scene = new Scene(mainPane, 800, 600);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
