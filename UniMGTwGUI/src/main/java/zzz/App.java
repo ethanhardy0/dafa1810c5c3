@@ -52,7 +52,7 @@ public class App extends Application {
         
         TextArea updateCourseArea = new TextArea();
         updateCourseArea.setPrefRowCount(8);
-        grid.add(updateCourseArea, 1, 39, 25, 8);
+        grid.add(updateCourseArea, 8, 29, 25, 8);
 
         Label studentLabel = new Label("Add Student:");
         grid.add(studentLabel, 5, 2);
@@ -381,3 +381,7 @@ public class App extends Application {
     }
 
 }
+
+// use isSelected as opposed to event handlers for radio buttons
+// removeStudent - add getStuddentID
+// Change textArea to output area
