@@ -55,6 +55,10 @@ public class Instructor {
     public String getTitle() {
         return this.prefix + " " + name;
     }
+// Getter method for returning instructors name
+    public String getName() {
+        return this.name;
+    }
 
 // Method for returning the instructor object in a string format
     public String toString() {

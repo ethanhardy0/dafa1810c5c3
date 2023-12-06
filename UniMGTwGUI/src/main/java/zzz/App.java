@@ -1,32 +1,32 @@
 package zzz;
 
+import java.awt.Checkbox;
 import java.util.ArrayList;
-import java.util.Collection;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField; 
+import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox; 
+import javafx.geometry.Insets;
 
 import javafx.stage.Stage;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 
 /**
@@ -34,26 +34,22 @@ import javafx.util.Duration;
  */
 public class App extends Application {
 
-    
     public static ArrayList<Student> studentArray = new ArrayList<>();
     public static ArrayList<Course> courseArray = new ArrayList<>();
     public static ArrayList<Instructor> instructorArray = new ArrayList<>();
     private static int courseNum;
     private static int courseCounter;
-    
+
     @Override
     public void start(Stage stage) {
-    // Different parts of GUI
+        // Different parts of GUI
+        // Student
         GridPane grid = new GridPane();
         grid.setVgap(1);
         grid.setHgap(1);
 
-        // Student
-
         Label studentLabel = new Label("Add Student:");
         grid.add(studentLabel, 5, 2);
-        Button stuButton = new Button("Add Student ->");
-        grid.add(stuButton,6,18);      
 
         // Add Student Labels
         Label stuNameLabel = new Label("Name: ");
@@ -61,217 +57,249 @@ public class App extends Application {
         Label stuMajorLabel = new Label("Major:");
         Label stuGPALabel = new Label("GPA:");
         Label stuEmailLabel = new Label("Email:");
-        
+
+        Button stuButton = new Button("Add Student ->");
+
+        grid.add(stuButton, 6, 8);
+
         grid.add(stuNameLabel, 5, 3);
         grid.add(stuYearLabel, 5, 4);
         grid.add(stuMajorLabel, 5, 5);
-        grid.add(stuGPALabel, 5, 6); 
+        grid.add(stuGPALabel, 5, 6);
         grid.add(stuEmailLabel, 5, 7);
-        
-        TextField stuNameField = new TextField();
-        ComboBox<String> stuYearDrop = new ComboBox<>();
-        stuYearDrop.setItems(FXCollections.observableArrayList(
+
+        TextField stuName = new TextField();
+        // TextField stuYear = new TextField();
+
+        ComboBox<String> stuYear = new ComboBox<>();
+        stuYear.setItems(FXCollections.observableArrayList(
                 "Freshman",
                 "Sophomore",
                 "Junior",
                 "Senior"
         ));
-        TextField stuMajorField = new TextField();
-        TextField stuGPAField = new TextField();
-        TextField stuEmailField = new TextField();
-        
-        grid.add(stuYearDrop, 6, 4);
-        grid.add(stuNameField, 6, 3);
-        grid.add(stuMajorField, 6, 5);
-        grid.add(stuGPAField, 6, 6);
-        grid.add(stuEmailField, 6, 7);
-        
-        //
-        EventHandler<ActionEvent> addStudentEvent = (ActionEvent e) -> {
 
-            Student student = new Student(stuNameField.getText(), stuYearDrop.getValue(), stuMajorField.getText(), 
-                Double.parseDouble(stuGPAField.getText()), stuEmailField.getText());
-        
-            studentArray.add(student);
-        
-            stuNameField.clear();
-            stuMajorField.clear();
-            stuGPAField.clear();
-            stuEmailField.clear(); 
-            stuYearDrop.getItems().clear();
+        TextField stuMajor = new TextField();
+        TextField stuGPA = new TextField();
+        TextField stuEmail = new TextField();
 
-            // Prints student objects created --> DELETE WHEN FINISHED
-            for(int i =0; i < studentArray.size();i++)  {
-                System.out.println(studentArray.get(i).getName());
-                System.out.println(studentArray.get(i).getStudentMajor());
-                System.out.println(studentArray.get(i).getGPA());
-                System.out.println(studentArray.get(i).getStudentYear());
-                System.out.println(studentArray.get(i).getStudentEmail());
-                System.out.println(studentArray.get(i).getStudentID());
+        grid.add(stuYear, 6, 4);
+        grid.add(stuName, 6, 3);
+        grid.add(stuMajor, 6, 5);
+        grid.add(stuGPA, 6, 6);
+        grid.add(stuEmail, 6, 7);
+
+        ObservableList<String> stuNameList = FXCollections.observableArrayList();
+
+        EventHandler<ActionEvent> addStudentEvent = (var e) -> {
+            if (stuEmail.getText().contains("@")) {
+
+                Student student = new Student(stuName.getText(), stuYear.getValue(), stuMajor.getText(), Double.parseDouble(stuGPA.getText()), stuEmail.getText());
+
+                studentArray.add(student);
+
+                stuNameList.add(student.getName());
+
+                stuName.clear();
+
+                stuMajor.clear();
+                stuGPA.clear();
+                stuEmail.clear();
+            } else {
+                Label missingSymbol = new Label("Not valid email! Re-enter!");
+                Duration duration = Duration.seconds(5);
+                grid.add(missingSymbol, 6, 9);
+
+                Timeline timeline = new Timeline(new KeyFrame(duration, event -> missingSymbol.setVisible(false)));
+
+                timeline.setCycleCount(1);
+                timeline.play();
             }
-        }; 
- 
-        // when button is pressed 
-        stuButton.setOnAction(addStudentEvent); 
-  
-        // Course
 
-        Label courseLabel = new Label("Add Course:");
-        grid.add(courseLabel, 15, 2);
-        Button courseButton = new Button("Add Course ->");
-        grid.add(courseButton, 16, 18);
+        };
+
+        // when button is pressed 
+        stuButton.setOnAction(addStudentEvent);
+
+        Label courNameLabel = new Label("Add Course:");
+        Button courButton = new Button("Add Course ->");
 
         Label courseNameLabel = new Label("Course Name: ");
-        Label courseBuildingLabel = new Label("Building:");
+        Label courseBuildingLabel = new Label("Course Building Name:");
         Label roomNumberLabel = new Label("Room Number:");
         Label courseCapacityLabel = new Label("Max Capacity:");
-        
-        grid.add(courseNameLabel,15,3);
-        grid.add(courseBuildingLabel,15,4);
-        grid.add(roomNumberLabel, 15,5);
-        grid.add(courseCapacityLabel,15,6);
-        
+        grid.add(courButton, 16, 7);
+
+        grid.add(courNameLabel, 15, 2);
+        grid.add(courseNameLabel, 15, 3);
+        grid.add(courseBuildingLabel, 15, 4);
+        grid.add(roomNumberLabel, 15, 5);
+        grid.add(courseCapacityLabel, 15, 6);
+
         TextField courseNameField = new TextField();
+        //TextField courseBuildingField = new TextField();
         ComboBox<String> courseBuildingDrop = new ComboBox<>();
         courseBuildingDrop.setItems(FXCollections.observableArrayList(
                 "Showker",
                 "Chandler",
                 "Burress Hall"
-          
         ));
+
         TextField courseRoomNumberField = new TextField();
         TextField courseCapacityField = new TextField();
-        
-        grid.add(courseNameField, 16,3);
+
+        grid.add(courseNameField, 16, 3);
         grid.add(courseBuildingDrop, 16, 4);
-        grid.add(courseRoomNumberField,16,5);
-        grid.add(courseCapacityField, 16,6);
-        
-        EventHandler<ActionEvent>addCourseEvent = (ActionEvent e) -> {
-      
-            Course course = new Course(courseNameField.toString(), courseBuildingDrop.getValue(),
-            courseRoomNumberField.toString(), Integer.parseInt(courseCapacityField.getText()));
-      
+        grid.add(courseRoomNumberField, 16, 5);
+        grid.add(courseCapacityField, 16, 6);
+
+        ObservableList<String> courseNameList = FXCollections.observableArrayList();
+
+        EventHandler<ActionEvent> addCourseEvent = (ActionEvent e) -> {
+
+            Course course = new Course(courseNameField.getText(), courseBuildingDrop.getValue(),
+                    courseRoomNumberField.getText(), Integer.parseInt(courseCapacityField.getText()));
+
             courseArray.add(course);
 
-            
-            System.out.println("Course Array length"+ courseArray.size());
-            Label success = new Label("Course added!");
+            courseNameList.add(course.getName());
 
-            if (courseArray.size() > courseCounter)   {
+            System.out.println("Course Array length" + courseArray.size());
+
+            if (courseArray.size() > courseCounter) {
                 courseCounter++;
                 System.out.println("Course counter" + courseCounter);
-                Duration duration = Duration.seconds(2);
-                grid.add(success,20,20);
-      
-                Timeline timeline = new Timeline(new KeyFrame(duration, event -> success.setVisible(false)));
-      
-                timeline.setCycleCount(1);
-                timeline.play();
+
             }
 
             courseNameField.clear();
             courseRoomNumberField.clear();
             courseCapacityField.clear();
-            courseBuildingDrop.getItems().clear();
-        };  
-        courseButton.setOnAction(addCourseEvent);
 
-        // Instructor
+        };
 
-        Label instrLabel = new Label("Add Instructor:");
-        grid.add(instrLabel, 25, 2);
-        Button instrButton = new Button("Add Instructor ->");
-        grid.add(instrButton, 26, 18);
+        courButton.setOnAction(addCourseEvent);
+        Label addInstructorLabel = new Label("Add Instructor:");
+        Label instNameLabel = new Label("Name:");
+        Label instPrefixLabel = new Label("Prefix:");
+        Label instOfficeLabel = new Label("Office: ");
+        Label instDepartLabel = new Label("Department");
+        Label instEmailLabel = new Label("Email:");
 
-        Label instrNameLabel = new Label("Name:");
-        Label instrPrefixLabel = new Label("Prefix:");
-        Label instrOfficeLabel = new Label("Office:");
-        Label instrDeptLabel = new Label("Department:");
-        Label instrEmailLabel = new Label("Email:");
-        
-        grid.add(instrNameLabel, 25, 3);
-        grid.add(instrPrefixLabel, 25, 4);
-        grid.add(instrOfficeLabel, 25, 5);
-        grid.add(instrDeptLabel, 25, 6);
-        grid.add(instrEmailLabel, 25, 7);
+        TextField instNameText = new TextField();
+        TextField instOfficeText = new TextField();
+        TextField instDepartText = new TextField();
+        TextField instEmailText = new TextField();
 
-        TextField instrNameField = new TextField();
-        ComboBox<String> instrPrefixDrop = new ComboBox<>();
-        instrPrefixDrop.setItems(FXCollections.observableArrayList(
-            "Dr.",
+        ComboBox<String> instPrefixDrop = new ComboBox<>();
+        instPrefixDrop.setItems(FXCollections.observableArrayList(
+                "Dr.",
                 "Ms.",
                 "Mrs.",
                 "Mr."
         ));
-        TextField instrOfficeField = new TextField();
-        TextField instrDeptField = new TextField();
-        TextField instrEmailField = new TextField();
 
-        grid.add(instrNameField, 26, 3);
-        grid.add(instrPrefixDrop, 26, 4);
-        grid.add(instrOfficeField, 26, 5);
-        grid.add(instrDeptField, 26, 6);
-        grid.add(instrEmailField, 26, 7);
+        Button addInstButton = new Button("Add Instructor->");
 
-        EventHandler<ActionEvent> addInstrEvent = (ActionEvent e) -> {
-            Instructor instructor = new Instructor(instrNameField.toString(), instrPrefixDrop.getValue(), 
-                instrOfficeField.toString(), instrDeptField.toString(), instrEmailField.toString());
+        grid.add(addInstructorLabel, 22, 2);
+        grid.add(instNameLabel, 22, 3);
+        grid.add(instPrefixLabel, 22, 4);
+        grid.add(instOfficeLabel, 22, 5);
+        grid.add(instDepartLabel, 22, 6);
+        grid.add(instEmailLabel, 22, 7);
+
+        grid.add(instNameText, 23, 3);
+        grid.add(instPrefixDrop, 23, 4);
+        grid.add(instOfficeText, 23, 5);
+        grid.add(instDepartText, 23, 6);
+        grid.add(instEmailText, 23, 7);
+
+        grid.add(addInstButton, 23, 8);
+
+        ObservableList<String> instructorNameList = FXCollections.observableArrayList();
+
+        EventHandler<ActionEvent> addInstEvent = (ActionEvent e) -> {
+            Instructor instructor = new Instructor(instNameText.getText(), instPrefixDrop.getValue(),
+                    instOfficeText.getText(), instDepartText.getText(), instEmailText.getText());
 
             instructorArray.add(instructor);
+            instructorNameList.add(instructor.getName());
 
-            instrNameField.clear();
-            instrOfficeField.clear();
-            instrDeptField.clear();
-            instrEmailField.clear();
-            instrPrefixDrop.getItems().clear();
+            instNameText.clear();
+            instOfficeText.clear();
+            instDepartText.clear();
+            instEmailText.clear();
+
         };
-        instrButton.setOnAction(addInstrEvent);
-
-        // Building a Course
+        addInstButton.setOnAction(addInstEvent);
 
         Label buildCourseLabel = new Label("Build a Course");
-        grid.add(buildCourseLabel, 5, 35);
-        Button updateCourseButton = new Button("Update Course ->");
-        grid.add(updateCourseButton, 6, 40);
+        Label buildAddStudentL = new Label("Add Student:");
+        Label buildToCourseL = new Label("To Course: ");
+        Label buildInstructoIsL = new Label("Instructor is: ");
+        Label newInstL = new Label("New Instructor?");
 
-        Label buildAddStudentLabel = new Label("Add Student:");
-        Label buildToCourseLabel = new Label("To Course:");
-        Label buildInstructorToLabel = new Label("Instructor Is:");
-        Label buildNewInstructor = new Label("New Instructor?");
+        grid.add(buildCourseLabel, 5, 30);
+        grid.add(buildAddStudentL, 5, 32);
+        grid.add(buildToCourseL, 5, 33);
+        grid.add(buildInstructoIsL, 5, 35);
 
-        grid.add(buildAddStudentLabel, 5, 36);
-        grid.add(buildToCourseLabel, 5, 37);
-        grid.add(buildNewInstructor, 6, 38); 
-        grid.add(buildInstructorToLabel, 5, 39); 
+        RadioButton addStudentRadio = new RadioButton("Add Student");
+        RadioButton removeStudentRadio = new RadioButton("Remove Student");
+        CheckBox newInstBox = new CheckBox();
 
-        ComboBox<Student> addStudentDrop = new ComboBox<>();
-        //addStudentDrop.setItems();
-        ComboBox<Course> toCourseDrop = new ComboBox<>();
-        //toCourseDrop.setItems();
-        CheckBox newInstructor = new CheckBox();
-        ComboBox<Instructor> addInstructorDrop = new ComboBox<>();
-        //addInstructor.setItems();
+        ComboBox<String> nameDrop = new ComboBox<>();
+        nameDrop.setItems(stuNameList);
+
+        ComboBox<String> courseDrop = new ComboBox<>();
+        courseDrop.setItems(courseNameList);
+
+        ComboBox<String> instDrop = new ComboBox<>();
+        instDrop.setItems(instructorNameList);
+
+        Button updateCourseButton = new Button("Update Course->");
+
+        grid.add(nameDrop, 6, 32);
+        grid.add(courseDrop, 6, 33);
+        grid.add(newInstBox, 6, 34);
+        grid.add(newInstL, 5, 34);
+        grid.add(instDrop, 6, 35);
+        grid.add(updateCourseButton, 5, 36);
+
         TextArea updateCourseArea = new TextArea();
-
-        grid.add(addStudentDrop, 6, 36);
-        grid.add(toCourseDrop, 6, 37);
-        grid.add(newInstructor, 5, 38); // Aligning weird
-        grid.add(addInstructorDrop, 6, 39);
-        grid.add(updateCourseArea, 30, 40); // TextArea messes up format for grid
-
-        EventHandler<ActionEvent> updateCourse = (ActionEvent e) -> {
-
-            addStudentDrop.getItems().clear();
-            toCourseDrop.getItems().clear();
-            newInstructor.setSelected(false);
-            addInstructorDrop.getItems().clear();
-        };
-        updateCourseButton.setOnAction(updateCourse);
-
-        StackPane mainPane = new StackPane(grid);  
         
-        var scene = new Scene(mainPane, 800, 500);
+        updateCourseArea.setPrefRowCount(10);
+        updateCourseArea.setPrefColumnCount(30);
+        grid.add(updateCourseArea, 7, 32, 1, 5);
+
+
+        EventHandler<ActionEvent> buildACourseAction = (ActionEvent e) -> {
+            updateCourseArea.clear();
+
+            grid.add(addStudentRadio, 6, 31);
+            grid.add(removeStudentRadio, 7, 31);
+
+            for (int i = 0; i < courseArray.size(); i++) {
+                if (courseArray.get(i).getName().equals(courseDrop.getValue())) {
+                    for (int j = 0; j < studentArray.size(); j++) {
+                        courseArray.get(i).enrolledStudent(studentArray.get(j));
+                        updateCourseArea.appendText(courseArray.get(i).getRoster());
+                    }
+                }
+                for (int x = 0; x < instructorArray.size(); x++) {
+                    courseArray.get(i).assignInstructor(instructorArray.get(x));
+                }
+                System.out.println(courseArray);
+            }
+            buildCourseLabel.setText("Edit a Course");
+            updateCourseButton.setText("Save Changes");
+        };
+
+        updateCourseButton.setOnAction(buildACourseAction);
+
+        StackPane mainPane = new StackPane(grid);
+
+        var scene = new Scene(mainPane, 720, 480);
         stage.setScene(scene);
         stage.show();
     }

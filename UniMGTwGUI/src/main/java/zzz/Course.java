@@ -86,6 +86,10 @@ public class Course {
         return str;
     }
 
+    public String getName() {
+        return this.courseName;
+    }
+
 // Getter method for retrieving students enrolled in a course
     public String getRoster() {
     // Chat helped make this
