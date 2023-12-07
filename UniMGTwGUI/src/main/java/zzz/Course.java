@@ -90,6 +90,21 @@ public class Course {
         return this.courseName;
     }
 
+    public String getRoom() {
+        return this.courseBldgRoom;
+    }
+
+    public int getCapacity() {
+        return this.courseCapacity;
+    }
+
+    public String getLocation() {
+        return this.courseBuilding;
+    }
+
+    public Instructor getInstructor() {
+        return this.courseInstructor;
+    }
 // Getter method for retrieving students enrolled in a course
     public String getRoster() {
     // Chat helped make this

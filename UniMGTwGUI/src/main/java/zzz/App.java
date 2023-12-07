@@ -49,10 +49,10 @@ public class App extends Application {
         grid.setVgap(1);
         grid.setHgap(1);
 
-        
         TextArea updateCourseArea = new TextArea();
-        updateCourseArea.setPrefRowCount(8);
-        grid.add(updateCourseArea, 8, 29, 25, 8);
+        updateCourseArea.setPrefRowCount(10);
+        updateCourseArea.setPrefColumnCount(16);
+        grid.add(updateCourseArea, 8, 29, 16, 10);
 
         Label studentLabel = new Label("Add Student:");
         grid.add(studentLabel, 5, 2);
@@ -122,6 +122,8 @@ public class App extends Application {
                 timeline.play();
             }
             stuYear.getSelectionModel().clearSelection();
+            
+            
         };
 
         // when button is pressed 
@@ -275,11 +277,14 @@ public class App extends Application {
         grid.add(addStudentRadio, 5, 31);
         grid.add(removeStudentRadio, 6, 31);
 
-
-
-
         EventHandler<ActionEvent> buildACourseAction = (ActionEvent e) -> {
             updateCourseArea.clear();
+
+            
+            
+            
+            updateCourseButton.setText("Save Changes");
+            buildCourseLabel.setText("Edit a course");
 
             for (int i = 0; i < studentArray.size(); i++) {
 
@@ -288,11 +293,11 @@ public class App extends Application {
                     for (int j = 0; j < courseArray.size(); j++) {
 
                         // Check if the student is not already in the course
-                        if (courseArray.get(j).getName().equalsIgnoreCase(courseDrop.getValue()) && 
-                            !courseArray.get(j).getRoster().contains(studentArray.get(i).getName())) {
+                        if (courseArray.get(j).getName().equalsIgnoreCase(courseDrop.getValue())
+                                && !courseArray.get(j).getRoster().contains(studentArray.get(i).getName())) {
                             courseArray.get(j).enrolledStudent(studentArray.get(i));
                         }
-            
+
                         //updateCourseArea.clear();
                         //updateCourseArea.setText(courseArray.get(j).getRoster());
                     }
@@ -300,6 +305,8 @@ public class App extends Application {
                 }
             }
             for (Course course : courseArray) {
+                updateCourseArea.setText("Course: " + course.getName() + " Location: " + course.getLocation() + 
+                "Room: " + course.getRoom() + " Capacity: " + course.getCapacity() + " Instructor of Record: " + course.getInstructor() + "\n\n");
                 updateCourseArea.appendText(course.getRoster() + "\n");
             }
             nameDrop.getSelectionModel().clearSelection();
@@ -308,43 +315,48 @@ public class App extends Application {
             // addStudentRadio.selectToggle(null);
         };
 
-        
+        newInstBox.setOnAction(event -> {
+            // Set the ComboBox's disable property based on the CheckBox state
+            instDrop.setDisable(!newInstBox.isSelected());
+        });
 
         updateCourseButton.setOnAction(buildACourseAction);
 
         EventHandler<ActionEvent> removeStudentAction = (ActionEvent e) -> {
-            
+
             String selectedCourseName = courseDrop.getValue();
-            int selectedStudentID;
-        
-            try {
-                selectedStudentID = Integer.parseInt(nameDrop.getValue());
-            } catch (NumberFormatException ex) {
-                System.out.println("Invalid student ID");
-                return;
+            int selectedStudentID = 0;
+
+            for (int i = 0; i < studentArray.size(); i++) {
+                if (studentArray.get(i).getName().equalsIgnoreCase(nameDrop.getValue())) {
+
+                    selectedStudentID = studentArray.get(i).getStudentID();
+                }
+
             }
-        
+
+            //}
             for (Course course : courseArray) {
                 if (course.getName().equalsIgnoreCase(selectedCourseName)) {
                     // Remove the student from the course based on ID
                     course.removeStudent(selectedStudentID);
-        
+
                     // Update the course area
                     updateCourseArea.setText(String.join("\n", course.getRoster()));
-        
+
                     // Clear selections
                     nameDrop.getSelectionModel().clearSelection();
                     courseDrop.getSelectionModel().clearSelection();
                     instDrop.getSelectionModel().clearSelection();
-        
+
                     // Break out of the loop since we found and removed the student
                     return;
                 }
             }
+
 //            nameDrop.getSelectionModel().clearSelection();
 //            courseDrop.getSelectionModel().clearSelection();
 //            instDrop.getSelectionModel().clearSelection();
-
         };
 
         EventHandler<ActionEvent> addStudentAction = (ActionEvent e) -> {
@@ -352,16 +364,19 @@ public class App extends Application {
             if (addStudentRadio.isSelected()) {
                 removeStudentRadio.setSelected(false);
             }
+
+            buildAddStudentL.setText("Add Student:");
+            buildToCourseL.setText("To Course:");
             updateCourseButton.setOnAction(buildACourseAction);
 
         };
 
         EventHandler<ActionEvent> removeButtonAction = (ActionEvent e) -> {
-            buildAddStudentL.setText("Remove Student");
+            buildAddStudentL.setText("Remove Student:");
             if (removeStudentRadio.isSelected()) {
                 addStudentRadio.setSelected(false);
             }
-
+            buildToCourseL.setText("From Course:");
             updateCourseButton.setOnAction(removeStudentAction);
 
         };
@@ -371,7 +386,7 @@ public class App extends Application {
 
         StackPane mainPane = new StackPane(grid);
 
-        var scene = new Scene(mainPane, 720, 480);
+        var scene = new Scene(mainPane, 780, 480);
         stage.setScene(scene);
         stage.show();
     }
@@ -382,6 +397,6 @@ public class App extends Application {
 
 }
 
-// use isSelected as opposed to event handlers for radio buttons
-// removeStudent - add getStuddentID
-// Change textArea to output area
+// validation for instructor email
+// database
+
